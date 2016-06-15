@@ -15,8 +15,8 @@ import model.*;
 public class ControllerTabuleiro extends Observable {
 
 	private static ControllerTabuleiro controller;
+	private static boolean master = false;
 	private static List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
-
 	private List<Jogada> lstJogadas = new ArrayList<Jogada>();
 	private ArrayList<Continente> lstContinentes = new ArrayList<Continente>();
 	private Iterator<model.Exercito> itJogador = getLstJogadores().iterator();
@@ -73,8 +73,10 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	private ControllerTabuleiro() {
-
+		
 	}
+	
+
 
 	public int getQtdTroca() {
 		return qtdTroca;
@@ -1367,6 +1369,15 @@ public class ControllerTabuleiro extends Observable {
 
 	public boolean validaTroca(HashSet<String> lstTroca) {
 		return false;
+	}
+
+	public boolean isMaster() {
+		return master;
+	}
+
+	public static void setMaster() {
+		System.out.println("Master seted to true");
+		master = true;
 	}
 
 }

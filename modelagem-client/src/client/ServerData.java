@@ -20,7 +20,9 @@ public class ServerData implements Runnable{
 			e.printStackTrace();
 		}
 		while (in_serv.hasNextLine()) {
-			System.out.println(in_serv.nextLine());
+			String dataToBeSend = in_serv.nextLine();
+			System.out.println(dataToBeSend);
+			DeserializeData.updateDate(dataToBeSend);
 		}
 	}
 
