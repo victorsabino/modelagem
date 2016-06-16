@@ -869,6 +869,9 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	private void proxJogada() {
+		//TO BE IMPLEMENTED
+		//Mandar servidor enviar proxJogada nos outros clientes
+		
 		notificaMudancas();
 		for (Jogada j : controller.getLstJogadas()) {
 			if (j.isAtivo()) {
