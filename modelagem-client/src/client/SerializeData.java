@@ -14,6 +14,7 @@ public class SerializeData {
 		String seriealizedString = null;
 		if(type.compareTo("selectPlayer") == 0){
 			String name = v1;
+			seriealizedString = "selectPlayer:" + name;
 			Client.setMessage(seriealizedString);
 		}
 	}

@@ -1138,7 +1138,7 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
-	private void notificaMudancas() {
+	public void notificaMudancas() {
 		// Se o objetivo do jogador da vez dor diferente de nulo e o jogo ainda não possuir vencedor
 		if (jogadorDaVez.getObjetivo() != null && vencedor == null) {
 			
@@ -1379,8 +1379,8 @@ public class ControllerTabuleiro extends Observable {
 		return false;
 	}
 
-	public boolean isMaster() {
-		return master;
+	public static boolean isMaster() {
+		return true;
 	}
 
 	public static void setMaster() {

@@ -69,7 +69,7 @@ public class PnlBoneco extends JPanel {
 	}
 
 	// Retorna o nome do exercito
-	protected String getNome() {
+	public String getNome() {
 		return this.nome;
 	}
 	

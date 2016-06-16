@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import client.Client;
+import client.SerializeData;
 import controller.ControllerTabuleiro;
 
 @SuppressWarnings("serial")
@@ -23,7 +25,7 @@ public class Configuracao extends JFrame {
 	private static Configuracao configuracao;
 	private ArrayList<view.Exercito> lstExercitos = new ArrayList<view.Exercito>();
 	private ArrayList<view.Exercito> lstJogadores = new ArrayList<Exercito>();
-	
+	private boolean selected = false;
 	// Bloco de inicialização dos exercitos
 		{
 			lstExercitos.add(new view.Exercito("Laranja", 	new Color(209, 84, 000)));
@@ -66,7 +68,7 @@ public class Configuracao extends JFrame {
 		// Lendro a lista de exercitos, adicionando à lista de jogadores se o exército está selecionado
 		for(Exercito e: getLstexercitos()) {
 			if(e.isSelecionado()) {
-				lstJogadores.add(e);
+				lstJogadores.add(e);   
 				//TO BE IMPLEMENTED (OVERLOAD)
 				//SerializeData.getInstance().sendData("selecionaJogador",e.nome);
 			}
@@ -75,8 +77,8 @@ public class Configuracao extends JFrame {
 		// Embaralhando a lista de jogadores
 		ControllerTabuleiro.embaralhaLista(lstJogadores);
 		
-		// Se existem mais de 2 jogadores, cria os jogadores no tabuleiro
-		if(lstJogadores.size() > 2 ) {			
+		// Se existem mais de 2 jogadores, cria os jogadores no tabuleiroe é o mestre
+		if(lstJogadores.size() > 2 && ControllerTabuleiro.isMaster()) {			
 			for(Exercito e: lstJogadores) {
 				ControllerTabuleiro.setJogador(e.getNome(), e.getCor());
 			}
@@ -228,8 +230,13 @@ public class Configuracao extends JFrame {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					if(selected == false){
 					ex.setSelecionado();
 					repaint();
+					selected = true;
+					SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
+					//selecionar jogadores
+					}
 					
 				}
 			});
