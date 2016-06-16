@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.*;
 
 import client.Client;
+import client.SerializeData;
 import model.*;
 
 /**
@@ -932,14 +933,14 @@ public class ControllerTabuleiro extends Observable {
 
 	public Territorio getTerritorioOrigem() {
 		if(territorioOrigem != null){
-			System.out.println("Territorio origem" + territorioOrigem.getNome());
+			//System.out.println("Territorio origem" + territorioOrigem.getNome());
 		}
 		return territorioOrigem;
 	}
 
 	public Territorio getTerritorioDestino() {
 		if(territorioDestino != null){
-			System.out.println("Territorio destino" + territorioDestino.getNome());
+			//System.out.println("Territorio destino" + territorioDestino.getNome());
 		}
 		return territorioDestino;
 	}
@@ -1106,7 +1107,7 @@ public class ControllerTabuleiro extends Observable {
 				for (Dado d : lstDados) {
 					d.setNumero(0);
 				}
-
+				
 				// Joga os dados
 				for (int i = 0; i < numDados; i++) {
 					lstDados.get(i).jogaDado();
@@ -1125,9 +1126,7 @@ public class ControllerTabuleiro extends Observable {
 		}
 		
 		notificaMudancas();
-		//TO BE IMPLEMENTED (OVERLOAD)
-		//SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem(), getTerritorioOrigem().nome, getTerritorioOrigem().lstSoldados.size(), getTerritorioDestino(), getTerritorioDestino().nome, getTerritorioDestino().lstSoldados.size());
-
+		
 	}
 
 	public void btnProxJogada_click() {
@@ -1162,6 +1161,8 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	public void btnJogarDados_click() {
+		
+		Territorio territorioTemp = null;
 
 		if (vencedor == null) {
 
@@ -1175,6 +1176,7 @@ public class ControllerTabuleiro extends Observable {
 				controller.JogaDados('a', qtdDadosAtaque);
 				controller.JogaDados('d', qtdDadosDefesa);
 
+				territorioTemp = getTerritorioDestino();
 				for (Dado da : lstDadosAtaque) {
 					if (da.getNumero() != 0) {
 						Dado df = lstDadosDefesa.get(lstDadosAtaque.indexOf(da));
@@ -1193,18 +1195,25 @@ public class ControllerTabuleiro extends Observable {
 												territorioOrigem.getLstSoldados().get(0));
 									}
 									conquistouTerritorio = true;
+									
 									setMensagem("Exercito " + jogadorDaVez.getNome() + " invadiu o(a) "
 											+ getTerritorioDestino().getNome());
 									setTerritorioDestino(null);
+									
+									//conquistou territorio
 								}
 							}
-						}
+							//TO BE IMPLEMENTED (OVERLOAD)
+							//v1 = Fase do turno, v2 = nome do territorioOrigem, v3 = Cor do exercito, v4 = size dos soldados, v5, v6 e v7 eh o mesmo so que para o destino
+							//SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), getTerritorioDestino().getNome(), getTerritorioDestino().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()));
+							SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), territorioTemp.getNome(), territorioTemp.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(territorioTemp.getLstSoldados().size()));
+							
 					}
 				}
 			}
 		}
-
 	}
+}
 
 	public void telaVencedor() {
 		setMensagem("Exercito " + vencedor.getNome() + " ganhou o jogo! Objetivo: "
@@ -1282,11 +1291,13 @@ public class ControllerTabuleiro extends Observable {
 						} else {
 							setMensagem("Não há mais soldados na reserva");
 						}
+						
+						//TO BE IMPLEMENTED (OVERLOAD)
+						SerializeData.getInstance().sendData("Distribuir", t.getNome());
 
 					}
 					notificaMudancas();
-					//TO BE IMPLEMENTED (OVERLOAD)
-					//SerializeData.getInstance().sendData("Distribuir",t.nome);
+					
 				}
 
 				// Jogada de Ataque
@@ -1348,7 +1359,8 @@ public class ControllerTabuleiro extends Observable {
 
 					notificaMudancas();
 					//TO BE IMPLEMENTED (OVERLOAD)
-					//SerializeData.getInstance().sendData("Remanejar", getTerritorioOrigem(), getTerritorioOrigem().nome, getTerritorioOrigem().lstSoldados.size(), t, t.nome, t.lstSoldados.size());
+					//SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), territorioTemp.getNome(), territorioTemp.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(territorioTemp.getLstSoldados().size()));
+					SerializeData.getInstance().sendData("Remanejar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), t.getNome(), t.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(t.getLstSoldados().size()));
 				}
 
 			}
