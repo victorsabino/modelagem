@@ -67,6 +67,8 @@ public class Configuracao extends JFrame {
 		for(Exercito e: getLstexercitos()) {
 			if(e.isSelecionado()) {
 				lstJogadores.add(e);
+				//TO BE IMPLEMENTED (OVERLOAD)
+				//SerializeData.getInstance().sendData("selecionaJogador",e.nome);
 			}
 		}
 		

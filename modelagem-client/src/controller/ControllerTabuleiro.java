@@ -1120,8 +1120,10 @@ public class ControllerTabuleiro extends Observable {
 			setMensagem("Não é jogada de ataque");
 			notificaMudancas();
 		}
-
+		
 		notificaMudancas();
+		//TO BE IMPLEMENTED (OVERLOAD)
+		//SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem(), getTerritorioOrigem().nome, getTerritorioOrigem().lstSoldados.size(), getTerritorioDestino(), getTerritorioDestino().nome, getTerritorioDestino().lstSoldados.size());
 
 	}
 
@@ -1280,6 +1282,8 @@ public class ControllerTabuleiro extends Observable {
 
 					}
 					notificaMudancas();
+					//TO BE IMPLEMENTED (OVERLOAD)
+					//SerializeData.getInstance().sendData("Distribuir",t.nome);
 				}
 
 				// Jogada de Ataque
@@ -1340,7 +1344,8 @@ public class ControllerTabuleiro extends Observable {
 					}
 
 					notificaMudancas();
-
+					//TO BE IMPLEMENTED (OVERLOAD)
+					//SerializeData.getInstance().sendData("Remanejar", getTerritorioOrigem(), getTerritorioOrigem().nome, getTerritorioOrigem().lstSoldados.size(), t, t.nome, t.lstSoldados.size());
 				}
 
 			}
