@@ -11,9 +11,6 @@ public class War {
 		Thread t = new Thread(cli);
 		t.start();
 		Configuracao.getInstance();
-		
-		
-		
 	}
 
 }

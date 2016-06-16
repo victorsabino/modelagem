@@ -757,7 +757,7 @@ public class ControllerTabuleiro extends Observable {
 	 * 
 	 */
 	public void preparaTabuleiro() {
-
+		System.out.println("Testando funcao nova");
 		if (lstJogadores.size() > 0) {
 			qtdTroca = 4;
 			deck = Deck.getInstance();
