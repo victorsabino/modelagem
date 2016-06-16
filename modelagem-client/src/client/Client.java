@@ -35,8 +35,9 @@ public class Client implements Runnable{
 				PrintStream saida = new PrintStream(cli.getOutputStream());
 				//String msg = teclado.nextLine();
 				while (msgSentByClient.compareTo("###")!=0) {
-					System.out.println(hasMsg);
+					
 					if(hasMsg == true){
+						System.out.println(hasMsg);
 						System.out.println("msgSentByClient " + msgSentByClient);
 						saida.println(msgSentByClient);
 						msgSentByClient = "";
