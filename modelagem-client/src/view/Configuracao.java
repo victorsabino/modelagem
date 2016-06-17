@@ -135,6 +135,7 @@ public class Configuracao extends JFrame {
 				
 				if(validaJogadores()){
 					// Esconde a janela de configuração do jogo.
+					SerializeData.getInstance().sendData("init");
 					setVisible(false);
 				};
 							

@@ -10,9 +10,9 @@ public class SerializeData {
 		return instance;
 	}
 	
-	public void sendData(String v1){
-		if(v1.compareTo("init") == 0){
-			Client.setMessage(v1);
+	public void sendData(String type){
+		if(type.compareTo("init") == 0){
+			Client.setMessage(type);
 		}
 	}
 	public void sendData(String type, String v1){
