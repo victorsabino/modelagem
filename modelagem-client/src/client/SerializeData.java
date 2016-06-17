@@ -10,11 +10,13 @@ public class SerializeData {
 		return instance;
 	}
 	
-	public void sendData(String type){
+    public void sendData(String type){
+    	System.out.println("sending data to init");
 		if(type.compareTo("init") == 0){
 			Client.setMessage(type);
 		}
 	}
+
 
 	public void sendData(String type, String v1){
 		String seriealizedString = null;

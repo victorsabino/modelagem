@@ -23,5 +23,7 @@ public class DeserializeData {
 						}
 					}
 				}
+			else if(Data.contains("init")){
 			}
+		}
 	}
