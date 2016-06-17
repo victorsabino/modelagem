@@ -236,11 +236,12 @@ public class Configuracao extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if(selected == false){
+					SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
 					ex.setSelecionado();
 					repaint();
 					//comment this line to play just in one window
-					selected = true;
-					SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
+					//selected = true;
+					//ControllerTabuleiro.setClientPlayer(ex);
 					//selecionar jogadores
 					}
 					

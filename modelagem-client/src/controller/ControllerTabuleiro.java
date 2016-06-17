@@ -33,6 +33,8 @@ public class ControllerTabuleiro extends Observable {
 	private boolean conquistouTerritorio;
 	private DeckObjetivos deckObjetivos;
 	private Exercito vencedor;
+	private static view.Exercito clientPlayer = null;
+	private Exercito myself = null;
 
 	// Bloco de inicialização das jogadas
 	{
@@ -1406,6 +1408,17 @@ public class ControllerTabuleiro extends Observable {
 	public static void setMaster() {
 		System.out.println("Master seted to true");
 		master = true;
+	}
+
+
+
+	public view.Exercito getClientPlayer() {
+		return clientPlayer;
+	}
+	
+
+	public static void setClientPlayer(view.Exercito e) {
+		clientPlayer = e;
 	}
 
 }
