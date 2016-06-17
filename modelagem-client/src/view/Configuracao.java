@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle.Control;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -237,14 +239,16 @@ public class Configuracao extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if(selected == false){
-					SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
-					ex.setSelecionado();
-					repaint();
-					//comment this line to play just in one window
-					//selected = true;
-					//ControllerTabuleiro.setClientPlayer(ex);
-					selected = true;
-					//selecionar jogadores
+						ex.setSelecionado();
+						System.out.println("jogador 0");
+						repaint();
+						//comment this line to play just in one window
+						//selected = true;
+						//ControllerTabuleiro.setClientPlayer(ex);
+						//selected = true;
+						ControllerTabuleiro.setMyself(ex);
+						SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
+						//selecionar jogadores
 					}
 					
 				}

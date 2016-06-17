@@ -34,8 +34,8 @@ public class ControllerTabuleiro extends Observable {
 	private DeckObjetivos deckObjetivos;
 	private Exercito vencedor;
 	private static view.Exercito clientPlayer = null;
-	private Exercito myself = null;
-
+	private static view.Exercito viewMyself = null;
+	private static Exercito myself = null;
 	// Bloco de inicialização das jogadas
 	{
 		lstJogadas = new ArrayList<Jogada>();
@@ -750,7 +750,7 @@ public class ControllerTabuleiro extends Observable {
 		if (e.isJogadorFora()) {
 			ArrayList<Carta> lstCartaAux = new ArrayList<>(e.getLstCartas());
 			for (Carta c : e.getLstCartas()) {
-				moveEntreListas(lstCartaAux, jogadorDaVez.getLstCartas(), c);
+				//moveEntreListas(lstCartaAux, jogadorDaVez.getLstCartas(), c);
 			}
 			e.getLstCartas().clear();
 		}
@@ -765,8 +765,11 @@ public class ControllerTabuleiro extends Observable {
 	 * 
 	 */
 	public void preparaTabuleiro() {
-		System.out.println("Testando funcao nova");
+		
+		
 		if (lstJogadores.size() > 0) {
+			myself = getMyself() != null ? getMyself() : getLstJogadores().get(0);
+			System.out.println("Comparando myself " + myself);
 			qtdTroca = 4;
 			deck = Deck.getInstance();
 			proxJogador();
@@ -965,7 +968,7 @@ public class ControllerTabuleiro extends Observable {
 		return lstJogadas;
 	}
 
-	public List<model.Exercito> getLstJogadores() {
+	public static List<model.Exercito> getLstJogadores() {
 		return lstJogadores;
 	}
 
@@ -1147,7 +1150,6 @@ public class ControllerTabuleiro extends Observable {
 	public void notificaMudancas() {
 		// Se o objetivo do jogador da vez dor diferente de nulo e o jogo ainda não possuir vencedor
 		if (jogadorDaVez.getObjetivo() != null && vencedor == null) {
-			
 			// Se o check do objetivo do jogador for igual a true
 			if (jogadorDaVez.getObjetivo().getExercitoAlvo() == null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez)) {
 				setVencedor();
@@ -1164,7 +1166,6 @@ public class ControllerTabuleiro extends Observable {
 
 	private void setVencedor() {
 		this.vencedor = jogadorDaVez;
-
 	}
 
 	public void btnJogarDados_click() {
@@ -1274,105 +1275,105 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	public void pnlMapa_click(int x, int y, int botaoMouse) {
-
-		if (vencedor == null) {
-
-			Territorio t = descobreTerritorioClicado(x, y);
-			Continente c = descobreContinenteClicado(x, y);
-
-			if (t != null) {
-				Exercito e = t.getLstSoldados().get(0).getExercito();
-				// Jogada de distribuição
-				if (descobreJogadas().getNome() == "Distribuir" && jogadorDaVez.getLstCartas().size() < 5) {
-
-					if (e == jogadorDaVez) { // Se o territorio clicado for do
-												// jogador da vez
-
-						if (moveSoldadoContinente(c, t)) {
-
-						} else if (moveSoldadoAvulso(t)) {
-
-						} else if (jogadorDaVez.getLstSoldados().size() > 0) {
-							setMensagem(
-									"Soldados existentes na reserva são soldados de bônus por conquista de continente.");
-						} else {
-							setMensagem("Não há mais soldados na reserva");
+		if(getJogadorDaVez() == myself){
+			if (vencedor == null) {
+	
+				Territorio t = descobreTerritorioClicado(x, y);
+				Continente c = descobreContinenteClicado(x, y);
+	
+				if (t != null) {
+					Exercito e = t.getLstSoldados().get(0).getExercito();
+					// Jogada de distribuição
+					if (descobreJogadas().getNome() == "Distribuir" && jogadorDaVez.getLstCartas().size() < 5) {
+	
+						if (e == jogadorDaVez) { // Se o territorio clicado for do
+													// jogador da vez
+	
+							if (moveSoldadoContinente(c, t)) {
+	
+							} else if (moveSoldadoAvulso(t)) {
+	
+							} else if (jogadorDaVez.getLstSoldados().size() > 0) {
+								setMensagem(
+										"Soldados existentes na reserva são soldados de bônus por conquista de continente.");
+							} else {
+								setMensagem("Não há mais soldados na reserva");
+							}
+							
+							//TO BE IMPLEMENTED (OVERLOAD)
+							SerializeData.getInstance().sendData("Distribuir", t.getNome());
+	
 						}
+						notificaMudancas();
 						
-						//TO BE IMPLEMENTED (OVERLOAD)
-						SerializeData.getInstance().sendData("Distribuir", t.getNome());
-
 					}
-					notificaMudancas();
-					
-				}
-
-				// Jogada de Ataque
-				if (descobreJogadas().getNome() == "Atacar") {
-					if (e == jogadorDaVez) { // Se o territorio for do jogador da vez
-						if (t.getLstSoldados().size() > 1) {
-							setTerritorioOrigem(t); // Seta o territorio clicado como territorio de origem
-							notificaMudancas();
-						}
-					} else {
-						// Se houver territorio origem e o territorio clicado está na lista de territorio
-						// de origem
-						if (getTerritorioOrigem() != null && getTerritorioOrigem().getLstFronteiras().contains(t)) { 
-							setTerritorioDestino(t);
-						}
-					}
-				}
-
-				// Jogada de remanejamento
-				if (descobreJogadas().getNome() == "Remanejar") {
-
-					if (botaoMouse == MouseEvent.BUTTON1) {
-
-						if (e == jogadorDaVez) {
-							if (getTerritorioOrigem() != t) {
-								setTerritorioOrigem(t);
-							} else {
-								setTerritorioOrigem(null);
-							}
-						}
-
-					} else if (botaoMouse == MouseEvent.BUTTON3) {
-						if (e == jogadorDaVez) {
-							if (getTerritorioOrigem() != null && getTerritorioOrigem().getLstSoldados().size() > 1
-									&& getTerritorioOrigem().getLstFronteiras().contains(t)) {
-								Soldado soldado = getTerritorioOrigem().getLstSoldados().get(0);
-								if (!soldado.isImigrante()) {
-									moveEntreListas(getTerritorioOrigem().getLstSoldados(), t.getLstSoldados(),
-											soldado);
-									soldado.setImigrante();
-								} else {
-									setMensagem(
-											"Os soldados restantes são imigrantes e so poderão ser movidos na próxima rodada.");
-								}
-
-							} else {
-								if (getTerritorioOrigem().getLstFronteiras().contains(t)) {
-									setMensagem("Você não pode deixar seu território vazio");
-								} else {
-									setMensagem("O territorio " + getTerritorioOrigem().getNome()
-											+ " não faz fronteira com o territororio " + t.getNome());
-								}
+	
+					// Jogada de Ataque
+					if (descobreJogadas().getNome() == "Atacar") {
+						if (e == jogadorDaVez) { // Se o territorio for do jogador da vez
+							if (t.getLstSoldados().size() > 1) {
+								setTerritorioOrigem(t); // Seta o territorio clicado como territorio de origem
+								notificaMudancas();
 							}
 						} else {
-							setMensagem("O territorio " + t.getNome() + "  não pertence ao exercito "
-									+ jogadorDaVez.getNome());
+							// Se houver territorio origem e o territorio clicado está na lista de territorio
+							// de origem
+							if (getTerritorioOrigem() != null && getTerritorioOrigem().getLstFronteiras().contains(t)) { 
+								setTerritorioDestino(t);
+							}
 						}
 					}
-
-					notificaMudancas();
-					//TO BE IMPLEMENTED (OVERLOAD)
-					//SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), territorioTemp.getNome(), territorioTemp.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(territorioTemp.getLstSoldados().size()));
-					SerializeData.getInstance().sendData("Remanejar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), t.getNome(), t.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(t.getLstSoldados().size()));
+	
+					// Jogada de remanejamento
+					if (descobreJogadas().getNome() == "Remanejar") {
+	
+						if (botaoMouse == MouseEvent.BUTTON1) {
+	
+							if (e == jogadorDaVez) {
+								if (getTerritorioOrigem() != t) {
+									setTerritorioOrigem(t);
+								} else {
+									setTerritorioOrigem(null);
+								}
+							}
+	
+						} else if (botaoMouse == MouseEvent.BUTTON3) {
+							if (e == jogadorDaVez) {
+								if (getTerritorioOrigem() != null && getTerritorioOrigem().getLstSoldados().size() > 1
+										&& getTerritorioOrigem().getLstFronteiras().contains(t)) {
+									Soldado soldado = getTerritorioOrigem().getLstSoldados().get(0);
+									if (!soldado.isImigrante()) {
+										moveEntreListas(getTerritorioOrigem().getLstSoldados(), t.getLstSoldados(),
+												soldado);
+										soldado.setImigrante();
+									} else {
+										setMensagem(
+												"Os soldados restantes são imigrantes e so poderão ser movidos na próxima rodada.");
+									}
+	
+								} else {
+									if (getTerritorioOrigem().getLstFronteiras().contains(t)) {
+										setMensagem("Você não pode deixar seu território vazio");
+									} else {
+										setMensagem("O territorio " + getTerritorioOrigem().getNome()
+												+ " não faz fronteira com o territororio " + t.getNome());
+									}
+								}
+							} else {
+								setMensagem("O territorio " + t.getNome() + "  não pertence ao exercito "
+										+ jogadorDaVez.getNome());
+							}
+						}
+	
+						notificaMudancas();
+						//TO BE IMPLEMENTED (OVERLOAD)
+						//SerializeData.getInstance().sendData("Atacar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), territorioTemp.getNome(), territorioTemp.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(territorioTemp.getLstSoldados().size()));
+						SerializeData.getInstance().sendData("Remanejar", getTerritorioOrigem().getNome(), getTerritorioOrigem().getLstSoldados().get(0).getExercito().getNome(), Integer.toString(getTerritorioOrigem().getLstSoldados().size()), t.getNome(), t.getLstSoldados().get(0).getExercito().getNome(), Integer.toString(t.getLstSoldados().size()));
+					}
+	
 				}
-
 			}
 		}
-
 	}
 
 	private Continente descobreContinenteClicado(int x, int y) {
@@ -1416,6 +1417,23 @@ public class ControllerTabuleiro extends Observable {
 
 	public static void setClientPlayer(view.Exercito e) {
 		clientPlayer = e;
+	}
+
+
+
+	public Exercito getMyself() {
+		for(Exercito ex : getLstJogadores()){
+			System.out.println("Comparing " + ex.getNome());
+			if(ex.getNome() == viewMyself.getNome())
+				return ex;
+		}
+		return null;
+	}
+
+
+
+	public static void setMyself(view.Exercito myself) {
+		viewMyself = myself;
 	}
 
 }
