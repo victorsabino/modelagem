@@ -239,7 +239,6 @@ public class Configuracao extends JFrame {
 					//selected = true;
 					//ControllerTabuleiro.setClientPlayer(ex);
 					selected = true;
-					SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
 					//selecionar jogadores
 					}
 					
