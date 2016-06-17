@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.ControllerTabuleiro;
+import view.Configuracao;
 
 public class DeserializeData {
 	public static void updateDate(String Data){
@@ -12,6 +13,10 @@ public class DeserializeData {
 				System.out.println("Setting master . . .");
 				ControllerTabuleiro.setMaster();
 			}
+			else if(Data.compareTo("init") == 0){
+				 				// Abre o tabuleiro
+				 				Configuracao.getInstance().initGame();
+				  			}
 			else if(Data.contains("selectPlayer")){
 				String nome = Data.substring(Data.lastIndexOf(":") + 1);
 				System.out.println("Data recieved " + nome);
@@ -23,7 +28,5 @@ public class DeserializeData {
 						}
 					}
 				}
-			else if(Data.contains("init")){
-			}
 		}
 	}

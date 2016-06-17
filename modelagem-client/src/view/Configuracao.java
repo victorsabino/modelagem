@@ -189,7 +189,12 @@ public class Configuracao extends JFrame {
 		setResizable(false);
 		setVisible(true);
 	}
-
+	public void initGame(){
+		 		if(validaJogadores()){
+		 			// Esconde a janela de configuração do jogo.
+		 			setVisible(false);
+		 		};
+		 	}
 	public void exibeExercitos() {
 		
 		JPanel pnlExercitos = new JPanel(new FlowLayout(FlowLayout.LEFT, 0,0));

@@ -86,7 +86,7 @@ public class Exercito {
 			for (Exercito j : ControllerTabuleiro.getInstance().getLstJogadores()) {
 				
 				// Se o jogador não é o jogador da vez
-				if (j != ControllerTabuleiro.getInstance().getJogadorDaVez()) {
+				if (j != ControllerTabuleiro.getInstance().getJogadorDaVez()  && j.getObjetivo() != null) {
 					
 					// Se o objetivo do jogador é destruir este exército
 					if (j.getObjetivo().getExercitoAlvo() == this) {
