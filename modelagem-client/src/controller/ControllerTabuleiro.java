@@ -20,7 +20,7 @@ public class ControllerTabuleiro extends Observable {
 	private static List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
 	private List<Jogada> lstJogadas = new ArrayList<Jogada>();
 	private ArrayList<Continente> lstContinentes = new ArrayList<Continente>();
-	private Iterator<model.Exercito> itJogador = null;
+	private Iterator<model.Exercito> itJogador = getLstJogadores().iterator();
 	private Iterator<Jogada> itJogada = getLstJogadas().iterator();
 	private ArrayList<Dado> lstDadosAtaque = new ArrayList<Dado>();
 	private ArrayList<Dado> lstDadosDefesa = new ArrayList<Dado>();
@@ -689,15 +689,11 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	private void proxJogador() {
-		if(itJogador == null){
-			itJogador = getLstJogadores().iterator();
-		}
-		System.out.println("proximo jogador");
+
 		// Desmarca quem está ativo na lista de jogadores
 		for (model.Exercito e : controller.getLstJogadores()) {
 			if (e.isAtivo()) {
 				e.setAtivo();
-				System.out.println("ativo é  " + e.getNome());
 			}
 		}
 
@@ -706,11 +702,10 @@ public class ControllerTabuleiro extends Observable {
 
 		if (!itJogador.hasNext()) {
 			itJogador = controller.getLstJogadores().iterator();
-			System.out.println("Pegando iterado do 0");
 		}
 
 		jogadorDaVez = itJogador.next();
-		System.out.println("Avançando jogador da vez");
+
 		// Marca como o jogador ativo
 		jogadorDaVez.setAtivo();
 		setJogadorDaVez();
@@ -736,13 +731,11 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	public boolean possuiTerritorio(Exercito e) {
-		
+
 		for (Continente c : lstContinentes) {
 			for (Territorio t : c.getLstTerritorios()) {
-				if(t.getLstSoldados().size() > 0){
-					if (t.getLstSoldados().get(0).getExercito() == e) {
-						return true;
-					}
+				if (t.getLstSoldados().get(0).getExercito() == e) {
+					return true;
 				}
 			}
 		}
@@ -767,9 +760,8 @@ public class ControllerTabuleiro extends Observable {
 	 * 
 	 */
 	public void preparaTabuleiro() {
-		
+		System.out.println("Testando funcao nova");
 		if (lstJogadores.size() > 0) {
-			System.out.println("Preparando tabuleiro");
 			qtdTroca = 4;
 			deck = Deck.getInstance();
 			proxJogador();
@@ -783,7 +775,7 @@ public class ControllerTabuleiro extends Observable {
 
 	private void distribuiObjetivos() {
 
-		deckObjetivos = deckObjetivos.getInstance();
+		deckObjetivos = DeckObjetivos.getInstance();
 
 		// Iterador da lsita de objetivos do deck de objetivos começando do
 		// indice 0
@@ -829,7 +821,7 @@ public class ControllerTabuleiro extends Observable {
 
 		deck.embaralhaDeck();
 		deck.embaralhaDeck();
-		
+
 		for (Carta c : getDeck().getLstCartas()) {
 
 			if (!c.isCoringa()) {

@@ -15,7 +15,6 @@ public class SerializeData {
 			Client.setMessage(v1);
 		}
 	}
-	
 	public void sendData(String type, String v1){
 		String seriealizedString = null;
 		System.out.println("Distribuindo");
