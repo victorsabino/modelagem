@@ -101,34 +101,35 @@ public class PnlMapa extends JPanel implements Observer {
 					corBg = c.getCor();
 				}
 				
-				// Pintando os territorios marcados como fronteira, se jogada for de ataque
-				if(controller.getJogadaAtual().getNome() == "Atacar") {
-					if(
-							controller.getTerritorioOrigem() != null // Se houver territorio de origem
-							&& controller.getTerritorioOrigem().getLstFronteiras().contains(t) // & o territorio clicado estiver na lista de territorios de fronteiras do territorio de origem
-							&& controller.getTerritorioDestino() != t // & o territorio clicado não for o territorio de destino 
-							&& controller.getTerritorioOrigem().getLstSoldados().get(0).getExercito() != t.getLstSoldados().get(0).getExercito() // & O territorio clicado nao pertencer ao jogador atual
-					) {
-						corBg = c.getCor().brighter();	
+				if(controller.getJogadaAtual() != null){
+					// Pintando os territorios marcados como fronteira, se jogada for de ataque
+					if(controller.getJogadaAtual().getNome() == "Atacar") {
+						if(
+								controller.getTerritorioOrigem() != null // Se houver territorio de origem
+								&& controller.getTerritorioOrigem().getLstFronteiras().contains(t) // & o territorio clicado estiver na lista de territorios de fronteiras do territorio de origem
+								&& controller.getTerritorioDestino() != t // & o territorio clicado não for o territorio de destino 
+								&& controller.getTerritorioOrigem().getLstSoldados().get(0).getExercito() != t.getLstSoldados().get(0).getExercito() // & O territorio clicado nao pertencer ao jogador atual
+						) {
+							corBg = c.getCor().brighter();	
+						}
+					} else if(controller.getJogadaAtual().getNome() == "Remanejar") {
+						if(
+								controller.getTerritorioOrigem() != null // Se houver territorio de origem
+								&& controller.getTerritorioOrigem().getLstFronteiras().contains(t) // & o territorio clicado estiver na lista de territorios de fronteiras do territorio de origem
+								&& controller.getTerritorioDestino() != t // & o territorio clicado não for o territorio de destino 
+								&& controller.getTerritorioOrigem().getLstSoldados().get(0).getExercito() == t.getLstSoldados().get(0).getExercito() // & O territorio clicado nao pertencer ao jogador atual
+						) {
+							corBg = c.getCor().brighter();	
+						}
 					}
-				} else if(controller.getJogadaAtual().getNome() == "Remanejar") {
-					if(
-							controller.getTerritorioOrigem() != null // Se houver territorio de origem
-							&& controller.getTerritorioOrigem().getLstFronteiras().contains(t) // & o territorio clicado estiver na lista de territorios de fronteiras do territorio de origem
-							&& controller.getTerritorioDestino() != t // & o territorio clicado não for o territorio de destino 
-							&& controller.getTerritorioOrigem().getLstSoldados().get(0).getExercito() == t.getLstSoldados().get(0).getExercito() // & O territorio clicado nao pertencer ao jogador atual
-					) {
-						corBg = c.getCor().brighter();	
-					}
-				}
-				
-					g2d.setPaint(corBg);
-					g2d.fill(t.getShape());
-					g2d.setPaint(Color.black);
-					g2d.draw(t.getShape());
 					
-					t.desenhaPnlSoldados(g);
-				
+						g2d.setPaint(corBg);
+						g2d.fill(t.getShape());
+						g2d.setPaint(Color.black);
+						g2d.draw(t.getShape());
+						t.desenhaPnlSoldados(g);
+					
+				}
 			}
 
 		}

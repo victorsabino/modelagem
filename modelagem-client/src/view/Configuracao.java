@@ -68,7 +68,7 @@ public class Configuracao extends JFrame {
 		// Lendro a lista de exercitos, adicionando à lista de jogadores se o exército está selecionado
 		for(Exercito e: getLstexercitos()) {
 			if(e.isSelecionado()) {
-				lstJogadores.add(e);   
+				lstJogadores.add(e);
 				//TO BE IMPLEMENTED (OVERLOAD)
 				//SerializeData.getInstance().sendData("selecionaJogador",e.nome);
 			}
@@ -77,8 +77,8 @@ public class Configuracao extends JFrame {
 		// Embaralhando a lista de jogadores
 		ControllerTabuleiro.embaralhaLista(lstJogadores);
 		
-		// Se existem mais de 2 jogadores, cria os jogadores no tabuleiroe é o mestre
-		if(lstJogadores.size() > 2 && ControllerTabuleiro.isMaster()) {			
+		// Se existem mais de 2 jogadores, cria os jogadores no tabuleiro
+		if(lstJogadores.size() > 2 ) {			
 			for(Exercito e: lstJogadores) {
 				ControllerTabuleiro.setJogador(e.getNome(), e.getCor());
 			}
@@ -132,7 +132,7 @@ public class Configuracao extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				SerializeData.getInstance().sendData("init");
 				if(validaJogadores()){
 					// Esconde a janela de configuração do jogo.
 					setVisible(false);
@@ -141,7 +141,12 @@ public class Configuracao extends JFrame {
 			}	
 		});
 	}
-
+	public void initGame(){
+		if(validaJogadores()){
+			// Esconde a janela de configuração do jogo.
+			setVisible(false);
+		};
+	}
 	private void carregaBgJanela() {
 		// TODO Auto-generated method stub
 		String Imagem = "src/resources/Images/bgConfiguracao.png";
@@ -233,6 +238,7 @@ public class Configuracao extends JFrame {
 					if(selected == false){
 					ex.setSelecionado();
 					repaint();
+					//comment this line to play just in one window
 					selected = true;
 					SerializeData.getInstance().sendData("selectPlayer", ex.getNome());
 					//selecionar jogadores

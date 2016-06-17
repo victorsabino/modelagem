@@ -86,9 +86,11 @@ public class Exercito {
 			for (Exercito j : ControllerTabuleiro.getInstance().getLstJogadores()) {
 				
 				// Se o jogador não é o jogador da vez
-				if (j != ControllerTabuleiro.getInstance().getJogadorDaVez()) {
+				if (j != ControllerTabuleiro.getInstance().getJogadorDaVez() && j.getObjetivo() != null) {
 					
 					// Se o objetivo do jogador é destruir este exército
+					System.out.println("debugando 3");
+					System.out.println("j.getObjetivo() " + j.getObjetivo());
 					if (j.getObjetivo().getExercitoAlvo() == this) {
 
 						// Seta o objetivo de 24 territorios para o jogador
